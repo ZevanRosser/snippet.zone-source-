@@ -5,7 +5,7 @@
   font-size: .8em;
   background: rgb(3, 21, 36);
   color: rgba(156, 221, 254, 1);
-  padding: .5em;
+  padding: 1em;
 }
 .hh b {
   font-weight: normal;
@@ -57,5 +57,8 @@
 }
 
 .cmt {
-  color: gray;
+  color: gray !important;
+}
+.cmt b {
+  color: gray !important;
 }
