@@ -18,7 +18,8 @@ function htmlEntities(str) {
 }
 
 function decorate(accum, br = '') {
-  accum = accum.replace(/[^a-zA-Z0-9\s]/g, '<u>$&</u>');
+
+  //accum = accum.replace(/[^a-zA-Z0-9\s]/g, '<u>$&</u>');
 
   for (let i = 0; i < words.length; i++) {
     if (accum.indexOf(words[i]) != -1) {
@@ -76,6 +77,11 @@ function highlight(code) {
     } else if (startString != null) {
       result += decorate(accum);
       accum = '';
+
+      if (startString === '/' && code[i + 1] == ' ') {
+        result += decorate(char);
+        continue;
+      }
 
       j = i + 1;
       strAccum = '';

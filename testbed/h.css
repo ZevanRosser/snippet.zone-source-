@@ -24,9 +24,10 @@
   color: #b5cea8;
 }
 
-.str {
+.str, .str b  {
   color: #ce9178;
 }
+
 
 .par {
   color: white;
