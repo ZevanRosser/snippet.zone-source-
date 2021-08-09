@@ -18,9 +18,6 @@ function htmlEntities(str) {
 }
 
 function decorate(accum, br = '') {
-
-  //accum = accum.replace(/[^a-zA-Z0-9\s]/g, '<u>$&</u>');
-
   for (let i = 0; i < words.length; i++) {
     if (accum.indexOf(words[i]) != -1) {
       accum = accum.replace(regWords[i], `<i>${words[i]}</i>`);
@@ -44,9 +41,8 @@ function highlight(code) {
 
   for (i = 0; i < code.length; i++) {
     const char = code[i];
-    let nextChar;
-    let prevChar;
-    let startString = strs[char];
+    let startString = strs[char],
+        nextChar;
 
     if (char.match('\n')) {
       result += decorate(accum);
@@ -61,7 +57,6 @@ function highlight(code) {
 
       nextChar = code[j];
       while (nextChar != null && !nextChar.match(/\n/)) {
-        // @TODO escape \
         strAccum += nextChar;
         nextChar = code[++j];
       }
@@ -87,8 +82,7 @@ function highlight(code) {
       strAccum = '';
       nextChar = code[j];
 
-      while (nextChar != null && nextChar != startString) {
-        // @TODO escape
+      while (nextChar != null && nextChar != startString) { 
         strAccum += nextChar;
         nextChar = code[++j];
       }
@@ -98,8 +92,6 @@ function highlight(code) {
     } else if (char) {
       accum += char;
     }
-
-    prevChar = char;
   }
 
   result = result.replace(/([a-zA-Z_$]+)\./g, tag('o', '$1', '.'));

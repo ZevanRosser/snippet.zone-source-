@@ -16,14 +16,38 @@
 <body>
   <div id="z"></div>
   <script type="text/html" id="s">
-const tabulaRecta = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  .replace(/./g,"$&$'$`\n");
- 
-const pre = document.createElement('pre');
-document.body.appendChild(pre);
-pre.innerHTML = tabulaRecta;
- 
-// technique comes from https://codegolf.stackexchange.com/a/87035/63485
+// from https://snippet.zone/2021/08/05/quick-svg/
+const scribble = document.body.appendChild(
+    document.createElement('div'));
+const d = (iter = 30) => {
+  // make sure the iter is odd
+  if (iter % 2 == 0) iter += 1;
+  // random cubic beziér
+  let path = 'M ';
+  for (let i = 0; i < iter; i++) {
+    const cmd = i == 1 ? 'C ' : ' '
+    path += cmd + Math.random() * 200 + ' ' + Math.random() * 200;
+  }
+  return path + 'z';
+}
+scribble.innerHTML = `<svg style='overlow:visible' viewBox="0 0 200 200">
+  // <hello>\b</hello>
+  <path d="${d()}" 
+    stroke="#295896" 
+    stroke-width="3"
+    fill="#ccc" 
+    fill-rule="even-odd"
+    vector-effect="non-scaling-stroke" />
+</svg>
+<style>
+  svg, div, body, html {
+    overflow: visible; 
+    height: 100%; 
+    width: 100%;
+    margin: 0; padding: 0;
+  }
+</style>
+`;
   </script>
   <style>
     
