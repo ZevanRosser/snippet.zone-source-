@@ -1,21 +1,28 @@
+// naive syntax highlighting 
+// @TODO:
+// - multiline commnet
+// - division without spaces ` / `
 const breakers = /\.|\s|\;|\,/g,
-  words = 'break case catch class continue const constructor debugger default delete do else export extends false finally for from function get if import in instanceof let new null return set super switch symbol this throw true try typeof undefined var void while with yield async await of'.split(' '),
-  regWords = words.map(w => new RegExp('\\b' + w + '\\b', 'g')),
+  words = 'break case catch class continue const constructor debugger default delete do else export extends false finally for from function get if import in instanceof let new null return set super switch symbol this throw true try typeof undefined var void while with yield async await of'.split(
+    ' '
+  ),
+  regWords = words.map(w => new RegExp(`\\b${w}\\b`, 'g')),
   strs = {
     [`'`]: `'`,
     [`"`]: `"`,
-    ["`"]: "`",
-    ["/"]: "/"
-  }
+    ['`']: '`',
+    ['/']: '/'
+  };
 
-const tag = (cls, body = '$&', end = '') => `<b class="${cls}">${body}</b>${end}`
+const tag = (cls, body = '$&', end = '') =>
+  `<b class="${cls}">${body}</b>${end}`;
 
-function htmlEntities(str) {
-  return str.replace(/&/g, '&amp;')
+const htmlEntities = str =>
+  str
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
-}
 
 function decorate(accum, br = '') {
   for (let i = 0; i < words.length; i++) {
@@ -24,54 +31,55 @@ function decorate(accum, br = '') {
     }
   }
 
-  accum = accum.replace(/(\W[A-Z].+)/, tag`obj`)
+  return accum
+    .replace(/(\+|\=|\-|\*|\%|\?|\||\&|\^|!)/g, "<u>$&</u>")
+    .replace(/(\W[A-Z].+)/, tag`obj`)
     .replace(/(^[A-Z].+)/, tag`obj`)
     .replace(/([0-9]+?)/g, tag`num`)
-    .replace(/(\(|\)|\{|\})/g, tag`par`)
-    .replace(/(\.|\,|\;|\:)/g, tag`brk`);
-
-  return accum + br;
+    .replace(/(\(|\)|\{|\}|\[|\])/g, tag`par`)
+    .replace(/(\.|\,|\;|\:)/g, tag`brk`)
+    + br;
 }
 
 function highlight(code) {
   let result = '',
     accum = '',
     strAccum = '',
-    i, j;
+    i,
+    j;
 
   for (i = 0; i < code.length; i++) {
     const char = code[i];
     let startString = strs[char],
-        nextChar;
+      nextChar;
+
+    const parse = (br) => {
+      result += decorate(accum, br);
+      accum = '';
+    };
 
     if (char.match('\n')) {
-      result += decorate(accum);
-      accum = '';
+      parse()
     }
 
     if (char === '/' && code[i + 1] === '/') {
-      result += decorate(accum);
-      accum = '';
+      parse();
       strAccum = '';
-      j = i;
 
+      j = i;
       nextChar = code[j];
+
       while (nextChar != null && !nextChar.match(/\n/)) {
         strAccum += nextChar;
         nextChar = code[++j];
       }
 
       i = j;
-
       result += tag('cmt', strAccum + '\n');
     } else if (char.match(breakers) && accum.length > 1) {
-
-      result += decorate(accum, char);
-      accum = '';
-
+      parse(char);
     } else if (startString != null) {
-      result += decorate(accum);
-      accum = '';
+      parse();
 
       if (startString === '/' && code[i + 1] == ' ') {
         result += decorate(char);
@@ -82,7 +90,7 @@ function highlight(code) {
       strAccum = '';
       nextChar = code[j];
 
-      while (nextChar != null && nextChar != startString) { 
+      while (nextChar != null && nextChar != startString) {
         strAccum += nextChar;
         nextChar = code[++j];
       }
