@@ -41,8 +41,11 @@ function showOverlay(snippetUrl) {
     });
 }
 document.addEventListener('mousedown', e => {
-  const el = e.target;
-  if (el.matches('[data-url]')) {
-    showOverlay(el.dataset.url);
+  const curr = e.target;
+  if (curr.matches('[data-url]')) {
+    showOverlay(curr.dataset.url);
+  } else if (curr.matches('.close')) {
+    el.codeOverlay.style.display = 'none'
   }
+
 })

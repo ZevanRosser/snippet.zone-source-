@@ -30,6 +30,12 @@
     li:hover {
       color: red;
     }
+    li:nth-child(1) {
+      color: red;
+    }
+    li:nth-child(2) {
+      color: red;
+    }
     p {
       margin-bottom: 1em;
     }
@@ -69,13 +75,28 @@
         width: 100%;
       }
 
-      .hh {
+     
+    
+    }
+
+     .hh {
         overflow: scroll;
         width: calc(100% - 2em);
         height: calc(100% - 2em);
       }
-      
-    }
+
+      .close {
+        padding: .1em;
+        color: white;
+        background: black;
+        position: absolute;
+        border: none;
+        font-size: 20px;
+        right: 0; top: 0;
+        border: 1px solid #333;
+        min-width: 25px;
+        cursor: pointer;
+      }
     
   </style>
   <link rel="stylesheet" href="testbed/h.css">
@@ -98,6 +119,7 @@
       <div class="colrow">
         <iframe class="codeFrame" srcdoc="" frameborder="0"></iframe>
       </div>
+      <button class="close">&times;</button>
     </div>
   </div>
    
