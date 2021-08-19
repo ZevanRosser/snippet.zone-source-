@@ -106,3 +106,5 @@ function highlight(code) {
 
   return `<div class="hh">${result}</div>`;
 }
+
+export const h = highlight;

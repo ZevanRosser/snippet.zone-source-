@@ -16,48 +16,37 @@
 <body>
   <div id="z"></div>
   <script type="text/html" id="s">
-// from https://snippet.zone/2021/08/05/quick-svg/
-const scribble = document.body.appendChild(
-    document.createElement('div'));
-const d = (iter = 30) => {
-  // make sure the iter is odd
-  if (iter % 2 == 0) iter += 1;
-  // random cubic beziér
-  let path = 'M ';
-  for (let i = 0; i < iter; i++) {
-    const cmd = i == 1 ? 'C ' : ' '
-    path += cmd + Math.random() * 200 + ' ' + Math.random() * 200;
+  a(C(d()));
+// "Being clever is not clever"
+// -- Bjarne Stroustrup
+d = document
+b = d.body
+a = (e = 'div') => b.appendChild(d.createElement(e))
+t = a`input`
+s = ''
+a()
+O = v => t.value = v
+'0123456789+-*()/C='.split('').map(v => {
+  v == '+' && a()
+  _ = a`button`
+  _.innerHTML = v
+  o = { 
+    C(){s = O('')},
+    ['='](){O(eval(s))}
   }
-  return path + 'z';
-}
-scribble.innerHTML = `<svg style='overlow:visible' viewBox="0 0 200 200">
-  // <hello>\b</hello>
-  <path d="${d()}" 
-    stroke="#295896" 
-    stroke-width="3"
-    fill="#ccc" 
-    fill-rule="even-odd"
-    vector-effect="non-scaling-stroke" />
-</svg>
-<style>
-  svg, div, body, html {
-    overflow: visible; 
-    height: 100%; 
-    width: 100%;
-    margin: 0; padding: 0;
-  }
-</style>
-`;
+  _.onclick = () => o[v] ? o[v]() : (s = s + v, O(s))
+})
   </script>
   <style>
     
   </style>
 
   <link rel="stylesheet" href="h.css">
-  <script src="h.js"></script>
-  <script>
-    z.innerHTML = highlight(s.innerHTML);
-    console.log(highlight(s.innerHTML));
+  
+  <script type="module">
+    import { h } from './h.js';
+    z.innerHTML = h(s.innerHTML);
+    console.log(h(s.innerHTML));
   </script>
 </body>
 
