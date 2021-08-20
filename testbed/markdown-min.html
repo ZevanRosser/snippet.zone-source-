@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="md">
+    # Heading 
+    ## Heading Stuff
+
+    - one 
+    - two
+    - three
+    **bold** stuff is **cool**
+
+    _italic_ and `some code`
+
+    ~~strikethrough~~
+
+    ` == <code>
+
+    words and lines
+  </div>
+
+  <script> 
+
+    function mark(str) {
+      const lines = str.split`\n`;
+      let wasLi;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const hdr = line.trim().split`#`.length - 1;
+        
+        if (hdr > 0) {
+          lines[i] = `<h${hdr}>
+            ${lines[i].replace(/#/g,'')}</h${hdr}>`
+        } else if (line.trim().startsWith('-')) {
+          lines[i] = `${!wasLi ? '<ul>' : ''}
+            <li>${lines[i]}</li>`
+          wasLi = true
+        } else if (wasLi) {
+          lines[i - 1] += '</ul>\n'
+          wasLi = false;
+        }
+      }
+
+      return lines.join`\n`
+        .replace(/\*\*(\w+)\*\*/gm, '<b>$1</b>')
+        .replace(/_(\w+)_/gm, '<i>$1</i>')
+        .replace(/~~(\w+)~~/gm, '<strike>$1</strike>')
+    }
+
+    md.innerHTML = mark(md.innerHTML)
+  </script>
+ 
+  
+</body>
+</html>
